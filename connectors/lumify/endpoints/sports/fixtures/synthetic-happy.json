@@ -1,0 +1,29 @@
+{
+    "name": "synthetic-happy",
+    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /sports (lumify.ai/docs); the wire is the schema.",
+    "calls": [
+        {
+            "req": {
+                "method": "GET",
+                "url": "https://lumify.ai/v1/sports"
+            },
+            "res": {
+                "status": 200,
+                "body": {
+                    "data": [
+                        {
+                            "sport": "nba",
+                            "name": "NBA",
+                            "active": true
+                        },
+                        {
+                            "sport": "nfl",
+                            "name": "NFL",
+                            "active": true
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

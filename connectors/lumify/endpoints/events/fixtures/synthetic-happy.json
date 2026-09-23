@@ -1,0 +1,36 @@
+{
+    "name": "synthetic-happy",
+    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /events (lumify.ai/docs); the wire is the schema.",
+    "calls": [
+        {
+            "req": {
+                "method": "GET",
+                "url": "https://lumify.ai/v1/events?limit=5"
+            },
+            "res": {
+                "status": 200,
+                "body": {
+                    "data": [
+                        {
+                            "event_id": 12345,
+                            "sport": "nba",
+                            "status": "scheduled",
+                            "start_time": "2026-01-15T00:00:00Z",
+                            "participants": [
+                                {
+                                    "role": "home",
+                                    "name": "Boston Celtics"
+                                },
+                                {
+                                    "role": "away",
+                                    "name": "Miami Heat"
+                                }
+                            ]
+                        }
+                    ],
+                    "next_after_id": 12345
+                }
+            }
+        }
+    ]
+}

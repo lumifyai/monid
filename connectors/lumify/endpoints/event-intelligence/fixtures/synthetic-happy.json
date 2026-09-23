@@ -1,0 +1,27 @@
+{
+    "name": "synthetic-happy",
+    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /events/{event_id}/intelligence (lumify.ai/docs); the wire is the schema.",
+    "calls": [
+        {
+            "req": {
+                "method": "GET",
+                "url": "https://lumify.ai/v1/events/12345/intelligence"
+            },
+            "res": {
+                "status": 200,
+                "body": {
+                    "event_id": 12345,
+                    "recommendation": {
+                        "market": "moneyline",
+                        "side": "home",
+                        "confidence": 0.61
+                    },
+                    "signals": [
+                        "line moved toward home",
+                        "sharp money home"
+                    ]
+                }
+            }
+        }
+    ]
+}

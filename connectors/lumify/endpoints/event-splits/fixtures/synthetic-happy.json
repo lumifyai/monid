@@ -1,0 +1,30 @@
+{
+    "name": "synthetic-happy",
+    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /events/{event_id}/splits (lumify.ai/docs); the wire is the schema.",
+    "calls": [
+        {
+            "req": {
+                "method": "GET",
+                "url": "https://lumify.ai/v1/events/12345/splits"
+            },
+            "res": {
+                "status": 200,
+                "body": {
+                    "event_id": 12345,
+                    "markets": {
+                        "moneyline": {
+                            "home": {
+                                "tickets_pct": 62,
+                                "money_pct": 48
+                            },
+                            "away": {
+                                "tickets_pct": 38,
+                                "money_pct": 52
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
