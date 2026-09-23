@@ -8,14 +8,17 @@ import { defineProvider, presets } from "@shared/core";
  * per-event bet intelligence, plus team and player reference data. Results
  * come back inline; nothing polls.
  *
- * BILLING. Lumify meters usage in a single pool of account CREDITS; a call's
- * draw depends on what data is available at request time (the account's own
- * `/v1/estimate` returns the min/max credits for a planned call), so no
- * per-endpoint credit count rides the response body. Each endpoint here
- * pins a flat PER_CALL draw of one credit against that pool — the honest
- * floor; the $/credit of the plan and any per-tool weighting are the hosted
- * rate card's job, not the connector's. No `consolidate`: the vendor does
- * not report a per-response meter, so the declared model IS the bill.
+ * BILLING. Lumify meters usage in a single pool of account CREDITS. The
+ * vendor's own meter is the `X-Credits-Used` response header
+ * (https://lumify.ai/docs, 2026-09-23), which hook fns cannot read — so
+ * there is no `usage.consolidate`. List/lookup endpoints (sports, events,
+ * teams, players) pin a flat PER_CALL draw of one credit, the published
+ * floor when the call succeeds. Event-scoped reads that can return
+ * `available: false` (odds, splits, intelligence) are PER_UNIT on that
+ * flag: a 200 with `available: false` is `X-Credits-Used: 0` and settles
+ * at zero; `available: true` settles at one credit (the fallback
+ * rate-card amount). The $/credit of the plan is the hosted rate card's
+ * job, not the connector's.
  *
  * Errors are real non-2xx `{ error: { code, message, status, doc_url },
  * detail }` bodies — `output.fromError` digests them; the engine zero-bills
@@ -40,6 +43,9 @@ export default defineProvider({
         notes: [
             "Failed requests are not billed: the engine zero-bills every " +
             "non-2xx response.",
+            "Odds, splits, and intelligence return HTTP 200 with " +
+            "available: false (and X-Credits-Used: 0) when the data is " +
+            "not ready — those settle at zero credits.",
             "A call's credit draw varies with the data available at request " +
             "time; the account's estimate endpoint returns the min/max " +
             "credits for a planned call before you make it.",

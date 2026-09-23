@@ -12,13 +12,13 @@ export const zEventsQueryParams = z.object({
     status: z.string().min(1).optional().describe(
         "Event status filter, e.g. 'scheduled', 'live', 'final'.",
     ),
-    date: z.string().min(1).optional().describe(
+    date: z.iso.date().optional().describe(
         "Single calendar date (YYYY-MM-DD).",
     ),
-    from: z.string().min(1).optional().describe(
+    from: z.iso.date().optional().describe(
         "Start of a date range (YYYY-MM-DD).",
     ),
-    to: z.string().min(1).optional().describe(
+    to: z.iso.date().optional().describe(
         "End of a date range (YYYY-MM-DD).",
     ),
     season_id: z.number().int().optional().describe(

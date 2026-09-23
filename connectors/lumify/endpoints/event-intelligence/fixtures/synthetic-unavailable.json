@@ -1,0 +1,20 @@
+{
+    "name": "synthetic-unavailable",
+    "description": "SYNTHETIC — a 200 from GET /events/{event_id}/intelligence with available: false; Lumify reports X-Credits-Used: 0, so settle is zero.",
+    "calls": [
+        {
+            "req": {
+                "method": "GET",
+                "url": "https://lumify.ai/v1/events/12345/intelligence"
+            },
+            "res": {
+                "status": 200,
+                "body": {
+                    "event_id": 12345,
+                    "available": false,
+                    "bets": []
+                }
+            }
+        }
+    ]
+}

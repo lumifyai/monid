@@ -1,7 +1,7 @@
 import { assertEquals, assertRejects } from "@std/assert";
 import { fromFileUrl } from "@std/path";
-import type { Json } from "@shared/core";
 import {
+    estimateEndpoint,
     liveSkip,
     loadFixture,
     runEndpoint,
@@ -45,21 +45,23 @@ Deno.test(`${ID} provider error (synthetic 401): zero usage`, async () => {
     assertEquals(result.usage, { credits: {}, evidence: {} });
 });
 
-Deno.test(`${ID}: unknown query params are rejected`, async () => {
+Deno.test(`${ID}: active_only must be a boolean`, async () => {
     const unit = await testSealedUnit(ID);
     const fixture = await loadFixture(`${fixturesDir}synthetic-happy.json`);
     await assertRejects(
         () =>
             runEndpoint({
                 unit,
-                input: {
-                    queryParams: { __unknown__: 1 } as Record<string, Json>,
-                },
+                input: { queryParams: { active_only: "true" } },
                 mode: "replay",
                 fixture,
             }),
         Error,
         "INVALID_INPUT",
+    );
+    assertEquals(
+        await estimateEndpoint(unit, { queryParams: { active_only: true } }),
+        { credits: { default: 1 }, evidence: { CALL: 1 } },
     );
 });
 

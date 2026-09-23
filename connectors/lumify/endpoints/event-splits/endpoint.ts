@@ -1,4 +1,4 @@
-import { defineEndpoint, UsageModelKind } from "@shared/core";
+import { defineEndpoint, Unit, UsageModelKind } from "@shared/core";
 import { zEventSplitsPathParams } from "./schema/inputs.ts";
 
 export default defineEndpoint({
@@ -13,11 +13,25 @@ export default defineEndpoint({
     request: { method: "GET", path: "/events/{event_id}/splits" },
     input: { schema: { pathParams: zEventSplitsPathParams } },
     usage: {
-        /** One credit per call against the account's Lumify credit pool. */
+        /** 1 credit when splits are available — https://lumify.ai/docs
+         *  (2026-09-23). A 200 with `available: false` reports
+         *  `X-Credits-Used: 0`. Hooks cannot read response headers, so
+         *  the body flag is the meter. Estimate assumes available (the
+         *  pre-run honest max / fallback rate-card amount). */
         model: {
-            kind: UsageModelKind.PER_CALL,
+            kind: UsageModelKind.PER_UNIT,
+            unit: Unit.RESULT,
             label: "splits reads",
+            description: "available splits payloads returned",
             consumes: { credit: "default", amount: 1 },
+        },
+        estimate: () => ({ counts: { RESULT: 1 } }),
+        evidence: ({ data, utils }) => {
+            const available = utils.json.optionalGet(
+                data.output,
+                "$.available",
+            );
+            return { counts: { RESULT: available === true ? 1 : 0 } };
         },
     },
 });
