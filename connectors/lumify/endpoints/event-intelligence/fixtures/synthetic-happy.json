@@ -1,6 +1,6 @@
 {
     "name": "synthetic-happy",
-    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /events/{event_id}/intelligence (lumify.ai/docs); the wire is the schema.",
+    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /events/{event_id}/intelligence (IntelligenceResponse: event_id, available, has_recommend, analyst_take, match_overview, intelligence_updated_at, bets[] of BetIntelligence; lumify.ai/openapi.json).",
     "calls": [
         {
             "req": {
@@ -12,14 +12,26 @@
                 "body": {
                     "event_id": 12345,
                     "available": true,
-                    "recommendation": {
-                        "market": "moneyline",
-                        "side": "home",
-                        "confidence": 0.61
-                    },
-                    "signals": [
-                        "line moved toward home",
-                        "sharp money home"
+                    "has_recommend": true,
+                    "analyst_take": "Home side favored on a late line move toward Boston.",
+                    "match_overview": "Celtics host the Heat in a divisional matchup.",
+                    "intelligence_updated_at": "2026-01-15T00:05:00Z",
+                    "bets": [
+                        {
+                            "bet_type": "moneyline",
+                            "tier": "lean",
+                            "confidence_score": 0.61,
+                            "coverage": 0.8,
+                            "market": { "side": "home" },
+                            "signals": { "line_move": "toward home" },
+                            "validator": {},
+                            "narrative": "Sharp money has moved toward the home side.",
+                            "rationale": [
+                                "line moved toward home",
+                                "sharp money home"
+                            ],
+                            "attribution": []
+                        }
                     ]
                 }
             }

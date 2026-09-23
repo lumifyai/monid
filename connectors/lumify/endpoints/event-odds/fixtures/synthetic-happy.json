@@ -1,6 +1,6 @@
 {
     "name": "synthetic-happy",
-    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /events/{event_id}/odds (lumify.ai/docs); the wire is the schema.",
+    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /events/{event_id}/odds (OddsResponse: event_id, available, bookmakers[], last_updated; lumify.ai/openapi.json).",
     "calls": [
         {
             "req": {
@@ -12,13 +12,15 @@
                 "body": {
                     "event_id": 12345,
                     "available": true,
-                    "bookmaker": "pinnacle",
-                    "markets": {
-                        "moneyline": {
-                            "home": -120,
-                            "away": 105
+                    "bookmakers": [
+                        {
+                            "bookmaker": "pinnacle",
+                            "markets": {
+                                "moneyline": { "home": -120, "away": 105 }
+                            }
                         }
-                    }
+                    ],
+                    "last_updated": "2026-01-15T00:05:00Z"
                 }
             }
         }

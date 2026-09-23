@@ -1,6 +1,6 @@
 {
     "name": "synthetic-happy",
-    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /sports (lumify.ai/docs); the wire is the schema.",
+    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /sports (SportsListResponse: sports[], total; lumify.ai/openapi.json).",
     "calls": [
         {
             "req": {
@@ -10,18 +10,23 @@
             "res": {
                 "status": 200,
                 "body": {
-                    "data": [
+                    "sports": [
                         {
-                            "sport": "nba",
+                            "id": 1,
+                            "slug": "nba",
                             "name": "NBA",
-                            "active": true
+                            "is_team_sport": true,
+                            "leagues": []
                         },
                         {
-                            "sport": "nfl",
+                            "id": 2,
+                            "slug": "nfl",
                             "name": "NFL",
-                            "active": true
+                            "is_team_sport": true,
+                            "leagues": []
                         }
-                    ]
+                    ],
+                    "total": 2
                 }
             }
         }

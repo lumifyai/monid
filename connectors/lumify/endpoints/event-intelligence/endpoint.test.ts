@@ -95,12 +95,10 @@ Deno.test({
             JSON.stringify(listed.output),
         );
         const body = listed.output as Record<string, Json>;
-        const rows = (Array.isArray(body.events)
-            ? body.events
-            : Array.isArray(body.data)
-            ? body.data
-            : []) as Array<Record<string, Json>>;
-        const eventId = rows[0]?.event_id;
+        const rows = (Array.isArray(body.events) ? body.events : []) as Array<
+            Record<string, Json>
+        >;
+        const eventId = rows[0]?.id;
         assert(eventId !== undefined && eventId !== null, "need an event_id");
         const result = await runEndpoint({
             unit: await testSealedUnit(ID),

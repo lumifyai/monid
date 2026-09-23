@@ -1,6 +1,6 @@
 {
     "name": "synthetic-unavailable",
-    "description": "SYNTHETIC — a 200 from GET /events/{event_id}/intelligence with available: false; Lumify reports X-Credits-Used: 0, so settle is zero.",
+    "description": "SYNTHETIC \u2014 a 200 from GET /events/{event_id}/intelligence with available: false; Lumify reports X-Credits-Used: 0, so settle is zero.",
     "calls": [
         {
             "req": {
@@ -12,6 +12,10 @@
                 "body": {
                     "event_id": 12345,
                     "available": false,
+                    "has_recommend": false,
+                    "analyst_take": null,
+                    "match_overview": null,
+                    "intelligence_updated_at": null,
                     "bets": []
                 }
             }

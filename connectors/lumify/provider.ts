@@ -3,10 +3,11 @@ import { defineProvider, presets } from "@shared/core";
 /**
  * Lumify (lumify.ai) — an agent-ready sports intelligence API. One wire
  * surface, `https://lumify.ai/v1/<path>`, Bearer auth (`Authorization:
- * Bearer lmfy-...`). Synchronous JSON: schedules and live scores, current
- * multi-book odds and line-movement history, public betting splits, and
- * per-event bet intelligence, plus team and player reference data. Results
- * come back inline; nothing polls.
+ * Bearer lmfy-...`). Synchronous JSON: schedules with status/period/clock,
+ * current multi-book odds, public betting splits, and per-event bet
+ * intelligence, plus team and player reference data. Results come back
+ * inline; nothing polls. (Lumify also publishes score, odds-history, and
+ * SSE endpoints not yet ported here — see the PR for scope.)
  *
  * BILLING. Lumify meters usage in a single pool of account CREDITS. The
  * vendor's own meter is the `X-Credits-Used` response header
@@ -29,10 +30,9 @@ export default defineProvider({
     meta: {
         displayName: "Lumify",
         summary:
-            "Agent-ready sports data: schedules, live scores, multi-book odds, line movement, public betting splits, and bet intelligence.",
+            "Agent-ready sports data: schedules and status, multi-book odds, public betting splits, and bet intelligence.",
         description: "The sports intelligence API for agents — list sports " +
-            "and events, read live scores and final results, pull current " +
-            "odds and full line-movement history across major sportsbooks, " +
+            "and events with schedule/status, pull current multi-book odds, " +
             "see how the public is betting with money and ticket splits, get " +
             "per-event bet intelligence, and resolve team and player " +
             "reference data. One key, one JSON surface, no scrapers or " +
