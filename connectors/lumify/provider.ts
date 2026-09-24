@@ -18,8 +18,11 @@ import { defineProvider, presets } from "@shared/core";
  * `available: false` (odds, splits, intelligence) are PER_UNIT on that
  * flag: a 200 with `available: false` is `X-Credits-Used: 0` and settles
  * at zero; `available: true` settles at one credit (the fallback
- * rate-card amount). The $/credit of the plan is the hosted rate card's
- * job, not the connector's.
+ * rate-card amount). Intelligence is the one exception to a plain
+ * `available` check: `forecasts[]` can be nonempty while `available` is
+ * still false, and that response IS charged — free requires
+ * `available: false` AND `forecasts` empty together. The $/credit of the
+ * plan is the hosted rate card's job, not the connector's.
  *
  * Errors are real non-2xx `{ error: { code, message, status, doc_url },
  * detail }` bodies — `output.fromError` digests them; the engine zero-bills
@@ -43,9 +46,10 @@ export default defineProvider({
         notes: [
             "Failed requests are not billed: the engine zero-bills every " +
             "non-2xx response.",
-            "Odds, splits, and intelligence return HTTP 200 with " +
-            "available: false (and X-Credits-Used: 0) when the data is " +
-            "not ready — those settle at zero credits.",
+            "Odds and splits return HTTP 200 with available: false (and " +
+            "X-Credits-Used: 0) when the data is not ready, and settle at " +
+            "zero credits. Intelligence does too, UNLESS forecasts is " +
+            "nonempty — a forecasts-only response is still charged.",
             "A call's credit draw varies with the data available at request " +
             "time; the account's estimate endpoint returns the min/max " +
             "credits for a planned call before you make it.",

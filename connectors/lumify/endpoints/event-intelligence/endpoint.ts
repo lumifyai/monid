@@ -21,16 +21,20 @@ export default defineEndpoint({
         },
     },
     usage: {
-        /** 1 credit when intelligence is available — https://lumify.ai/docs
-         *  (2026-09-23). A 200 with `available: false` reports
-         *  `X-Credits-Used: 0`. Hooks cannot read response headers, so
-         *  the body flag is the meter. Estimate assumes available (the
-         *  pre-run honest max / fallback rate-card amount). */
+        /** 1 credit when intelligence is available, OR when `forecasts` is
+         *  nonempty — https://lumify.ai/docs (2026-09-24). `bets[]` can be
+         *  empty (`available: false`) while `forecasts[]` still populates
+         *  for MLB/NFL/NCAAF/NBA/NCAAB/NHL/tennis; that response is still
+         *  charged. A 200 is free only when `available` is false AND
+         *  `forecasts` is empty (reports `X-Credits-Used: 0`). Hooks
+         *  cannot read response headers, so the body is the meter.
+         *  Estimate assumes the billable case (the pre-run honest max /
+         *  fallback rate-card amount). */
         model: {
             kind: UsageModelKind.PER_UNIT,
             unit: Unit.RESULT,
             label: "intelligence reads",
-            description: "available intelligence payloads returned",
+            description: "billable intelligence payloads returned",
             consumes: { credit: "default", amount: 1 },
         },
         estimate: () => ({ counts: { RESULT: 1 } }),
@@ -39,7 +43,12 @@ export default defineEndpoint({
                 data.output,
                 "$.available",
             );
-            return { counts: { RESULT: available === true ? 1 : 0 } };
+            const forecastsCount = utils.json.optionalLen(
+                data.output,
+                "$.forecasts",
+            ) ?? 0;
+            const billable = available === true || forecastsCount > 0;
+            return { counts: { RESULT: billable ? 1 : 0 } };
         },
     },
 });

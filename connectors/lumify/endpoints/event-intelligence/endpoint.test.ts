@@ -48,6 +48,28 @@ Deno.test(
     },
 );
 
+Deno.test(
+    `${ID} forecasts-only (synthetic 200): one credit when available is false but forecasts is nonempty`,
+    async () => {
+        const unit = await testSealedUnit(ID);
+        const fixture = await loadFixture(
+            `${fixturesDir}synthetic-forecasts-only.json`,
+        );
+        const result = await runEndpoint({
+            unit,
+            input: INPUT,
+            mode: "replay",
+            fixture,
+        });
+        assertEquals(result.httpStatus, 200);
+        assertEquals(result.isProviderError, false);
+        assertEquals(result.usage, {
+            credits: { default: 1 },
+            evidence: { RESULT: 1 },
+        });
+    },
+);
+
 Deno.test(`${ID} provider error (synthetic 404): zero usage`, async () => {
     const unit = await testSealedUnit(ID);
     const fixture = await loadFixture(

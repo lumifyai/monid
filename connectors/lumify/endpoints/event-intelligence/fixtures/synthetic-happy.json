@@ -1,6 +1,6 @@
 {
     "name": "synthetic-happy",
-    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /events/{event_id}/intelligence (IntelligenceResponse: event_id, available, has_recommend, analyst_take, match_overview, intelligence_updated_at, bets[] of BetIntelligence; lumify.ai/openapi.json).",
+    "description": "SYNTHETIC \u2014 not recorded. Shape from GET /events/{event_id}/intelligence (IntelligenceResponse: event_id, available, sport, league, odds_source, players, has_recommend, match_overview, rationale, intelligence_updated_at, bets[] of BetIntelligence with a documented bet_type token and priced market quote, forecasts[]; lumify.ai/docs/reference#event-intelligence).",
     "calls": [
         {
             "req": {
@@ -12,27 +12,69 @@
                 "body": {
                     "event_id": 12345,
                     "available": true,
+                    "sport": "soccer",
+                    "league": "mls",
+                    "odds_source": "pinnacle",
+                    "players": {
+                        "home": {
+                            "name": "D.C. United",
+                            "player_id": null,
+                            "team_id": 858
+                        },
+                        "away": {
+                            "name": "Nashville SC",
+                            "player_id": null,
+                            "team_id": 843
+                        }
+                    },
                     "has_recommend": true,
-                    "analyst_take": "Home side favored on a late line move toward Boston.",
-                    "match_overview": "Celtics host the Heat in a divisional matchup.",
+                    "match_overview": "D.C. United host Nashville SC in a divisional matchup.",
+                    "rationale": ["home side unbeaten in last 4 home matches"],
                     "intelligence_updated_at": "2026-01-15T00:05:00Z",
                     "bets": [
                         {
-                            "bet_type": "moneyline",
-                            "tier": "lean",
-                            "confidence_score": 0.61,
-                            "coverage": 0.8,
-                            "market": { "side": "home" },
-                            "signals": { "line_move": "toward home" },
-                            "validator": {},
-                            "narrative": "Sharp money has moved toward the home side.",
-                            "rationale": [
-                                "line moved toward home",
-                                "sharp money home"
-                            ],
-                            "attribution": []
+                            "bet_type": "ML_HOME",
+                            "player_role": "home",
+                            "player_id": null,
+                            "team_id": 858,
+                            "player_name": "D.C. United",
+                            "market": {
+                                "price": 199,
+                                "line": null,
+                                "book": "pinnacle"
+                            },
+                            "probability": 0.31903,
+                            "interval": [0.2631, 0.37496],
+                            "fair_price": 213,
+                            "edge": null,
+                            "tier": null,
+                            "fair": {
+                                "probability": 0.31903,
+                                "books": ["pinnacle"],
+                                "n_books": 1,
+                                "is_consensus": false
+                            },
+                            "edges_by_book": { "fanduel": 0.031 },
+                            "best": {
+                                "book": "fanduel",
+                                "price": 220,
+                                "edge": 0.031,
+                                "quote_age_seconds": 180.0
+                            },
+                            "ev": {
+                                "beta": true,
+                                "book": "fanduel",
+                                "price": 220,
+                                "ev_pct": 3.1,
+                                "kelly_fraction": 0.0141,
+                                "quote_age_seconds": 180.0,
+                                "n_books": 1
+                            },
+                            "narrative": null,
+                            "computed_at": "2026-01-15T00:05:00Z"
                         }
-                    ]
+                    ],
+                    "forecasts": []
                 }
             }
         }
